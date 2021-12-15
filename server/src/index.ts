@@ -3,12 +3,10 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import "reflect-metadata";
+import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CONSTANTS } from "./constants/strings";
-import typeDefs from "./graphql/typeDefs";
-import { resolvers } from "./graphql/resolvers";
-
-console.log(resolvers);
+import { resolvers } from "./graphql";
 
 createConnection()
   .then(async (connection) => {
@@ -24,8 +22,9 @@ createConnection()
 
     // setup ApolloServer
     const apolloServer = new ApolloServer({
-      typeDefs,
-      resolvers,
+      schema: await buildSchema({
+        resolvers: [...resolvers],
+      }),
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
