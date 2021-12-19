@@ -1,13 +1,16 @@
 import bcrypt from "bcryptjs";
 import {
   Arg,
+  Ctx,
   Field,
   Mutation,
   ObjectType,
   Query,
   Resolver,
 } from "type-graphql";
+import { CONSTANTS } from "../constants/strings";
 import { User } from "../entity/User";
+import { MyContext } from "../helpers/myContext";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -18,9 +21,6 @@ import { UserInput } from "./user.input";
 class LoginResponse {
   @Field(() => String)
   access_token: string;
-
-  @Field(() => String)
-  refresh_token: string;
 }
 
 @Resolver()
@@ -50,7 +50,8 @@ export class UserResolver {
 
   @Mutation(() => LoginResponse)
   async signIn(
-    @Arg("data") { email, password }: UserInput
+    @Arg("data") { email, password }: UserInput,
+    @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
     try {
       const user = await User.findOne({ where: { email } });
@@ -63,9 +64,12 @@ export class UserResolver {
       const accessToken = generateAccessToken(user.id);
       const refreshToken = generateRefreshToken(user.id);
 
+      res.cookie(CONSTANTS.JWT_COOKIE, refreshToken, {
+        httpOnly: true,
+      });
+
       return {
         access_token: accessToken,
-        refresh_token: refreshToken,
       };
     } catch (error: any) {
       throw new Error(error.message);

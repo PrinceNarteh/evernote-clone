@@ -7,6 +7,7 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CONSTANTS } from "./constants/strings";
 import { resolvers } from "./graphql";
+import { MyContext } from "./helpers/myContext";
 
 createConnection()
   .then(async (connection) => {
@@ -25,6 +26,7 @@ createConnection()
       schema: await buildSchema({
         resolvers: [...resolvers],
       }),
+      context: ({ req, res }: MyContext) => ({ req, res }),
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
