@@ -1,7 +1,27 @@
-import { UserInput } from "./user.input";
-import { User } from "../entity/User";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import bcrypt from "bcryptjs";
+import {
+  Arg,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
+import { User } from "../entity/User";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "./../helpers/generateToken";
+import { UserInput } from "./user.input";
+
+@ObjectType()
+class LoginResponse {
+  @Field(() => String)
+  access_token: string;
+
+  @Field(() => String)
+  refresh_token: string;
+}
 
 @Resolver()
 export class UserResolver {
@@ -28,8 +48,10 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => User)
-  async signIn(@Arg("data") { email, password }: UserInput): Promise<User> {
+  @Mutation(() => LoginResponse)
+  async signIn(
+    @Arg("data") { email, password }: UserInput
+  ): Promise<LoginResponse> {
     try {
       const user = await User.findOne({ where: { email } });
       if (!user) throw new Error("Invalid credentials");
@@ -38,7 +60,13 @@ export class UserResolver {
         throw new Error("Invalid credentials");
       }
 
-      return user;
+      const accessToken = generateAccessToken(user.id);
+      const refreshToken = generateRefreshToken(user.id);
+
+      return {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      };
     } catch (error: any) {
       throw new Error(error.message);
     }
