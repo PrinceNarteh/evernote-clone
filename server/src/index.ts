@@ -13,8 +13,13 @@ createConnection()
   .then(async (connection) => {
     const app = express();
 
-    // Express middlewares
-    app.use(cors());
+    // Express middleware
+    app.use(
+      cors({
+        origin: ["http://localhost:3000", "https://studio.apollographql.com"],
+        credentials: true,
+      })
+    );
     app.use(morgan("dev"));
 
     app.get("/", (req, res) => {
@@ -29,7 +34,7 @@ createConnection()
       context: ({ req, res }: MyContext) => ({ req, res }),
     });
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: false });
 
     // listening to port
     app.listen(CONSTANTS.PORT, () =>
