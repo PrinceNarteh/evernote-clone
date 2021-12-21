@@ -20,7 +20,7 @@ const STYLES = css`
   }
 `;
 
-const GENERICS = {
+export const GENERICS = {
   primaryColor: "#00a82d",
   primaryColorDark: "#008f26",
   border: "1px solid #f1f1f1",

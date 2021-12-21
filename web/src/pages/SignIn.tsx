@@ -1,5 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
+import styled from "@emotion/styled";
 import { FormEvent, useState, ChangeEvent } from "react";
+import { GENERICS } from "../components/GlobalStyle";
 import Wrapper from "../components/Wrapper";
 
 const SIGN_IN_MUTATION = gql`
@@ -42,34 +44,57 @@ const SignIn = () => {
   if (error) return <p>{JSON.stringify(error)}</p>;
 
   return (
-    <Wrapper backgroundColor="#ccc">
-      <form onSubmit={onSubmitHandler}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            name="email"
-            placeholder="Email address"
-            value={form.email}
-            onChange={onChangeHandler}
-          />
+    <Wrapper center>
+      <FormWrapper className="login-container">
+        <div className="left-side">
+          <img src="login.png" alt="" />
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            value={form.password}
-            onChange={onChangeHandler}
-          />
+        <div className="right-side">
+          <form onSubmit={onSubmitHandler}>
+            <div>
+              <input
+                type="text"
+                name="email"
+                placeholder="Email address"
+                value={form.email}
+                onChange={onChangeHandler}
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                value={form.password}
+                onChange={onChangeHandler}
+              />
+            </div>
+            <div>
+              <button type="submit">Login</button>
+            </div>
+          </form>
         </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
+      </FormWrapper>
     </Wrapper>
   );
 };
+
+const FormWrapper = styled("div")`
+  display: flex;
+  align-items: center;
+  border: ${GENERICS.border};
+  border-radius: 5px;
+  padding: 50px;
+
+  > div {
+    flex: 0.5;
+  }
+
+  .left-side {
+    img {
+      width: 200px;
+    }
+  }
+`;
 
 export default SignIn;
