@@ -1,5 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { FormEvent, useState, ChangeEvent } from "react";
+import Wrapper from "../components/Wrapper";
 
 const SIGN_IN_MUTATION = gql`
   mutation ($data: UserInput!) {
@@ -41,7 +42,7 @@ const SignIn = () => {
   if (error) return <p>{JSON.stringify(error)}</p>;
 
   return (
-    <div>
+    <Wrapper backgroundColor="#ccc">
       <form onSubmit={onSubmitHandler}>
         <div>
           <label htmlFor="email">Email</label>
@@ -67,7 +68,7 @@ const SignIn = () => {
           <button type="submit">Login</button>
         </div>
       </form>
-    </div>
+    </Wrapper>
   );
 };
 

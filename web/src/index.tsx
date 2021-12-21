@@ -7,6 +7,8 @@ import {
 } from "@apollo/client";
 import React from "react";
 import ReactDOM from "react-dom";
+import { GlobalStyles } from "./components/GlobalStyle";
+import Layout from "./components/Layout";
 import reportWebVitals from "./reportWebVitals";
 import Router from "./Router";
 
@@ -23,7 +25,10 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Router />
+      <GlobalStyles />
+      <Layout>
+        <Router />
+      </Layout>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
