@@ -50,6 +50,10 @@ const SignIn = () => {
           <img src="login.png" alt="" />
         </div>
         <div className="right-side">
+          <div>
+            <img src="logo.jpg" alt="" />
+            <h2>TakingNote</h2>
+          </div>
           <form onSubmit={onSubmitHandler}>
             <div>
               <input
@@ -83,8 +87,8 @@ const FormWrapper = styled("div")`
   display: flex;
   align-items: center;
   border: ${GENERICS.border};
-  border-radius: 5px;
-  padding: 50px;
+  border-radius: 0.5rem;
+  padding: 5rem;
 
   > div {
     flex: 0.5;
@@ -92,7 +96,30 @@ const FormWrapper = styled("div")`
 
   .left-side {
     img {
-      width: 200px;
+      width: 20rem;
+    }
+  }
+
+  .right-side {
+    > div:first-child {
+      text-align: center;
+
+      img {
+        width: 5rem;
+      }
+    }
+  }
+
+  form {
+    div {
+      margin-bottom: 1rem;
+
+      input {
+        border: ${GENERICS.border};
+        border-radius: 1rem;
+        padding: 1rem 2rem;
+        width: 100%;
+      }
     }
   }
 `;

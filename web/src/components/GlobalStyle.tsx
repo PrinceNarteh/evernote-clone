@@ -11,6 +11,9 @@ const STYLES = css`
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: grayscale;
   }
+  html {
+    font-size: 62.5%;
+  }
   a {
     text-decoration: none;
     color: inherit;
@@ -26,14 +29,16 @@ export const GENERICS = {
   border: "1px solid #f1f1f1",
   colorBlackCalm: "#333",
   color: "#737373",
-  boxShadow: "#ccc 0px 4px 5px -2px",
+  boxShadow: "#ccc 0rem 0.4rem 0.5rem -0.2rem",
 };
 
 export const MIXINS = {
   va: (align = "center") => css`
     display: flex;
     align-items: center;
-    justify-content: center;
+    ${align !== "center"
+      ? `justify-content: flex-start;`
+      : `justify-content: center;`}
   `,
 };
 
