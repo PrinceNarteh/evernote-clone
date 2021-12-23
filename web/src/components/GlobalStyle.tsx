@@ -1,11 +1,13 @@
 import { css, Global } from "@emotion/react";
 
 const STYLES = css`
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,600&display=swap");
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto", Arial, Helvetica, sans-serif;
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
     text-rendering: optimizeLegibility;
     font-smooth: always;
     -webkit-font-smoothing: antialiased;
@@ -13,6 +15,7 @@ const STYLES = css`
   }
   html {
     font-size: 62.5%;
+    font-family: "Poppins", sans-serif;
   }
   a {
     text-decoration: none;
@@ -24,7 +27,7 @@ const STYLES = css`
 `;
 
 export const GENERICS = {
-  primaryColor: "#00a82d",
+  primaryColor: "#5cc5c8",
   primaryColorDark: "#008f26",
   border: "1px solid #f1f1f1",
   colorBlackCalm: "#333",
