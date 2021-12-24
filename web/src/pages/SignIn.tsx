@@ -64,21 +64,21 @@ const SignIn = () => {
                 <img
                   src="google.png"
                   alt="Google logo"
-                  width={30}
+                  width={20}
                   height="auto"
                 />
-                create account with Google
+                Create account with Google
               </a>
             </button>
-            <button type="button" id="btn-1">
+            <button type="button">
               <a href="https://www.github.com">
                 <img
                   src="github.png"
                   alt="Google logo"
-                  width={30}
+                  width={20}
                   height="auto"
                 />
-                create account with Github
+                Create account with Github
               </a>
             </button>
           </div>
@@ -91,7 +91,7 @@ const SignIn = () => {
             <br />
           </form>
           <span>
-            Already have an account? <Link to={"/signup"}>sign in</Link>
+            Already have an account? <Link to={"/signup"}>Sign In</Link>
           </span>
         </div>
       </section>
@@ -147,6 +147,78 @@ const FormWrapper = styled("div")`
 
       img {
         width: 90%;
+      }
+    }
+  }
+
+  .right-side {
+    margin-left: 15rem;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    position: relative;
+
+    .form-wrapper {
+      h1 {
+        font-size: 3.2rem;
+        color: #3a3939;
+        margin-bottom: 4rem;
+      }
+
+      button {
+        width: 20rem;
+        padding: 1.4rem;
+        font-size: 1.4rem;
+        background: transparent;
+        border: 1px solid #cac9c9;
+        outline: none;
+        border-radius: 1rem;
+        margin: 0 0 4rem;
+
+        img {
+          width: 15px;
+          height: auto;
+          margin-right: 0.5rem;
+
+          a {
+            color: #3a3939;
+          }
+        }
+      }
+
+      #btn-1 {
+        margin-right: 2.5rem;
+      }
+
+      form {
+        line-height: 6rem;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.7rem;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #7e7e7e;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        padding: 1.4rem;
+        outline: none;
+        border: none;
+        background: #5cc5c8;
+        color: #fff;
+        border-radius: 1rem;
+        font-size: 1.6rem;
+        margin-top: 2.5rem;
+        cursor: pointer;
+      }
+
+      span {
+        font-size: 1.6rem;
       }
     }
   }
