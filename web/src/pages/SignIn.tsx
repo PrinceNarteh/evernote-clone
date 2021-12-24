@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { FormEvent, useState, ChangeEvent } from "react";
 import { GENERICS } from "../components/GlobalStyle";
 import Wrapper from "../components/Wrapper";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SIGN_IN_MUTATION = gql`
   mutation ($data: UserInput!) {
@@ -41,6 +41,7 @@ const SignIn = () => {
 
   return (
     <FormWrapper className="login-container">
+      {/* Left Side starts here */}
       <section className="left-side">
         <img src="logo.png" alt="logo" />
         <span>TakingNote</span>
@@ -49,7 +50,49 @@ const SignIn = () => {
           <img src="pencil.png" id="hero-img" alt="Pencil" />
         </div>
         <div className="images">
-          <img src="books.svg" width={200} alt="" />
+          <img src="books.png" width={200} alt="" />
+        </div>
+      </section>
+
+      {/* Right Side starts here */}
+      <section className="right-side">
+        <div className="form-wrapper">
+          <h1>Create Account</h1>
+          <div className="links">
+            <button type="button" id="btn-1">
+              <a href="https://www.google.com">
+                <img
+                  src="google.png"
+                  alt="Google logo"
+                  width={30}
+                  height="auto"
+                />
+                create account with Google
+              </a>
+            </button>
+            <button type="button" id="btn-1">
+              <a href="https://www.github.com">
+                <img
+                  src="github.png"
+                  alt="Google logo"
+                  width={30}
+                  height="auto"
+                />
+                create account with Github
+              </a>
+            </button>
+          </div>
+          <form onSubmit={onSubmitHandler}>
+            <input type="email" placeholder="Email Address" />
+            <br />
+            <input type="password" placeholder="Password" />
+            <br />
+            <input type="submit" value="Sign In" />
+            <br />
+          </form>
+          <span>
+            Already have an account? <Link to={"/signup"}>sign in</Link>
+          </span>
         </div>
       </section>
     </FormWrapper>
@@ -57,6 +100,10 @@ const SignIn = () => {
 };
 
 const FormWrapper = styled("div")`
+  width: 100%auto;
+  display: flex;
+  position: relative;
+
   .left-side {
     width: 40%;
     min-height: 100vh;
@@ -97,7 +144,10 @@ const FormWrapper = styled("div")`
     .images {
       position: absolute;
       bottom: 3.2rem;
-      left: 2rem;
+
+      img {
+        width: 90%;
+      }
     }
   }
 `;
