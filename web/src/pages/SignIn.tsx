@@ -1,9 +1,9 @@
 import { gql, useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
-import { FormEvent, useState, ChangeEvent } from "react";
-import { GENERICS } from "../components/GlobalStyle";
-import Wrapper from "../components/Wrapper";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GENERICS } from "../components/GlobalStyle";
+import { Button } from "../styles";
 
 const SIGN_IN_MUTATION = gql`
   mutation ($data: UserInput!) {
@@ -59,7 +59,7 @@ const SignIn = () => {
         <div className="form-wrapper">
           <h1>Create Account</h1>
           <div className="links">
-            <button type="button" id="btn-1">
+            <Button type="button" id="btn-1">
               <a href="https://www.google.com">
                 <img
                   src="google.png"
@@ -69,8 +69,8 @@ const SignIn = () => {
                 />
                 Create account with Google
               </a>
-            </button>
-            <button type="button">
+            </Button>
+            <Button type="button">
               <a href="https://www.github.com">
                 <img
                   src="github.png"
@@ -80,14 +80,30 @@ const SignIn = () => {
                 />
                 Create account with Github
               </a>
-            </button>
+            </Button>
           </div>
+          {error && <p className="error">{error.message}</p>}
           <form onSubmit={onSubmitHandler}>
-            <input type="email" placeholder="Email Address" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={onChangeHandler}
+            />
             <br />
-            <input type="password" placeholder="Password" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={onChangeHandler}
+            />
             <br />
-            <input type="submit" value="Sign In" />
+
+            <Button backgroundColor={`${GENERICS.primaryColor}`} fullWidth>
+              Sign In
+            </Button>
             <br />
           </form>
           <span>
@@ -130,6 +146,7 @@ const FormWrapper = styled("div")`
         width: 40rem;
         font-size: 4rem;
         color: #fff;
+        margin: 0 auto;
       }
 
       #hero-img {
@@ -159,6 +176,11 @@ const FormWrapper = styled("div")`
     text-align: center;
     position: relative;
 
+    .error {
+      font-size: 1.6rem;
+      color: crimson;
+    }
+
     .form-wrapper {
       h1 {
         font-size: 3.2rem;
@@ -166,16 +188,7 @@ const FormWrapper = styled("div")`
         margin-bottom: 4rem;
       }
 
-      button {
-        width: 20rem;
-        padding: 1.4rem;
-        font-size: 1.4rem;
-        background: transparent;
-        border: 1px solid #cac9c9;
-        outline: none;
-        border-radius: 1rem;
-        margin: 0 0 4rem;
-
+      & button {
         img {
           width: 15px;
           height: auto;
@@ -201,6 +214,7 @@ const FormWrapper = styled("div")`
         padding: 0.7rem;
         border: none;
         outline: none;
+        font-size: 1.5rem;
         border-bottom: 1px solid #7e7e7e;
       }
 
