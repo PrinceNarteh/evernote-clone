@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GENERICS } from "../components/GlobalStyle";
-import { Button } from "../styles";
+import { Button, Input } from "../styles";
 
 const SIGN_IN_MUTATION = gql`
   mutation ($data: UserInput!) {
@@ -15,7 +15,7 @@ const SIGN_IN_MUTATION = gql`
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [signIn, { loading, error, data }] = useMutation(SIGN_IN_MUTATION);
+  let [signIn, { loading, error }] = useMutation(SIGN_IN_MUTATION);
   const navigate = useNavigate();
 
   const onSubmitHandler = async (evt: FormEvent<HTMLFormElement>) => {
@@ -31,13 +31,14 @@ const SignIn = () => {
       onCompleted: () => {
         navigate("/");
       },
+      onError: () => {
+        loading = false;
+      },
     });
   };
 
   const onChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [target.name]: target.value });
-
-  if (loading) return <p>Loading....</p>;
 
   return (
     <FormWrapper className="login-container">
@@ -59,7 +60,7 @@ const SignIn = () => {
         <div className="form-wrapper">
           <h1>Create Account</h1>
           <div className="links">
-            <Button type="button" id="btn-1">
+            <Button label="" type="button" id="btn-1">
               <a href="https://www.google.com">
                 <img
                   src="google.png"
@@ -70,7 +71,7 @@ const SignIn = () => {
                 Create account with Google
               </a>
             </Button>
-            <Button type="button">
+            <Button label="" type="button">
               <a href="https://www.github.com">
                 <img
                   src="github.png"
@@ -84,24 +85,26 @@ const SignIn = () => {
           </div>
           {error && <p className="error">{error.message}</p>}
           <form onSubmit={onSubmitHandler}>
-            <input
+            <Input
               type="email"
               name="email"
               placeholder="Email Address"
               value={form.email}
               onChange={onChangeHandler}
             />
-            <br />
-            <input
+            <Input
               type="password"
               name="password"
               placeholder="Password"
               value={form.password}
               onChange={onChangeHandler}
             />
-            <br />
-
-            <Button backgroundColor={`${GENERICS.primaryColor}`} fullWidth>
+            <Button
+              backgroundColor={`${GENERICS.primaryColor}`}
+              fullWidth
+              loading={loading}
+              disabled={loading}
+            >
               Sign In
             </Button>
             <br />
@@ -206,16 +209,6 @@ const FormWrapper = styled("div")`
 
       form {
         line-height: 6rem;
-      }
-
-      input[type="email"],
-      input[type="password"] {
-        width: 100%;
-        padding: 0.7rem;
-        border: none;
-        outline: none;
-        font-size: 1.5rem;
-        border-bottom: 1px solid #7e7e7e;
       }
 
       input[type="submit"] {
