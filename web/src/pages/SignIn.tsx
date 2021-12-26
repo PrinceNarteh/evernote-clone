@@ -58,7 +58,7 @@ const SignIn = () => {
       {/* Right Side starts here */}
       <section className="right-side">
         <div className="form-wrapper">
-          <h1>Create Account</h1>
+          <h1>Sign In To Your Account</h1>
           <div className="links">
             <Button label="" type="button" id="btn-1">
               <a href="https://www.google.com">
@@ -110,7 +110,10 @@ const SignIn = () => {
             <br />
           </form>
           <span>
-            Already have an account? <Link to={"/signup"}>Sign In</Link>
+            Already have an account?{" "}
+            <Link to={"/signup"} className="link">
+              Sign up here
+            </Link>
           </span>
         </div>
       </section>
@@ -227,6 +230,10 @@ const FormWrapper = styled("div")`
       span {
         font-size: 1.6rem;
       }
+    }
+
+    .link {
+      color: ${GENERICS.primaryColor};
     }
   }
 `;
