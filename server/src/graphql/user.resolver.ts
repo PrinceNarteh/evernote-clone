@@ -8,12 +8,12 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import { CONSTANTS } from "../constants/strings";
 import { User } from "../entity/User";
 import { MyContext } from "../helpers/myContext";
 import {
   generateAccessToken,
   generateRefreshToken,
+  sendRefreshToken,
 } from "./../helpers/generateToken";
 import { UserInput } from "./user.input";
 
@@ -64,9 +64,7 @@ export class UserResolver {
       const accessToken = generateAccessToken(user.id);
       const refreshToken = generateRefreshToken(user.id);
 
-      res.cookie(CONSTANTS.JWT_COOKIE, refreshToken, {
-        httpOnly: true,
-      });
+      sendRefreshToken(res, refreshToken);
 
       return {
         access_token: accessToken,
