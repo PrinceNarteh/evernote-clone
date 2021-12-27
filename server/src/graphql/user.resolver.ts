@@ -8,6 +8,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
+import { getConnection } from "typeorm";
 import { User } from "../entity/User";
 import { MyContext } from "../helpers/myContext";
 import {
@@ -72,5 +73,12 @@ export class UserResolver {
     } catch (error: any) {
       throw new Error(error.message);
     }
+  }
+
+  @Mutation(() => Boolean)
+  async revokeUserSession(@Arg("userId") userId: string) {
+    await getConnection()
+      .getRepository(User)
+      .increment({ id: userId }, "token_version", 1);
   }
 }

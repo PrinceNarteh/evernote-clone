@@ -50,8 +50,12 @@ createConnection()
       const user = await User.findOne(data.userId);
       if (!user) return res.send({ success: false, access_token: "" });
 
-      const access_token = generateAccessToken(user.userId);
-      sendRefreshToken(res, generateRefreshToken(user.userId));
+      if (user.token_version !== data.tokenVersion) {
+        return res.send({ success: false, access_token: "" });
+      }
+
+      const access_token = generateAccessToken(user);
+      sendRefreshToken(res, generateRefreshToken(user));
       return res.send({ success: true, access_token });
     });
 
