@@ -22,7 +22,7 @@ export class Note extends BaseEntity {
   title: string;
 
   @Field(() => String)
-  @Column("longtext")
+  @Column("text")
   content: string;
 
   @Field(() => User)
