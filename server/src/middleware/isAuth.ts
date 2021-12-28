@@ -1,7 +1,7 @@
 import { MiddlewareFn } from "type-graphql";
 import jwt from "jsonwebtoken";
 import { MyContext } from "../helpers/myContext";
-import { CONSTANTS } from "./../constants/strings";
+import { CONSTANTS } from "../constants/strings";
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
   try {
@@ -11,7 +11,7 @@ export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
 
     const tokenPayload = jwt.verify(token, CONSTANTS.ACCESS_TOKEN_SECRET);
     if (!tokenPayload) throw new Error("Not authenticated");
-    context.tokenPayload = tokenPayload;
+    context.tokenPayload = tokenPayload as any;
   } catch (error) {
     throw new Error("Not authenticated");
   }
