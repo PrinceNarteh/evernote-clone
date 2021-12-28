@@ -7,10 +7,12 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entity/User";
 import { MyContext } from "../helpers/myContext";
+import { isAuth } from "../middleware/isAuth";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -62,8 +64,8 @@ export class UserResolver {
         throw new Error("Invalid credentials");
       }
 
-      const accessToken = generateAccessToken(user.id);
-      const refreshToken = generateRefreshToken(user.id);
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
 
       sendRefreshToken(res, refreshToken);
 
@@ -75,10 +77,25 @@ export class UserResolver {
     }
   }
 
+  @Query(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
+  async me(@Ctx() ctx: MyContext) {
+    const payload = ctx.tokenPayload;
+    if (!payload) return null;
+    try {
+      const user = await User.findOne(payload.userId);
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   @Mutation(() => Boolean)
-  async revokeUserSession(@Arg("userId") userId: string) {
+  async revokeUserSession(@Arg("userId") userId: string): Promise<Boolean> {
     await getConnection()
       .getRepository(User)
       .increment({ id: userId }, "token_version", 1);
+    return true;
   }
 }
