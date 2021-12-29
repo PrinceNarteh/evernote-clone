@@ -32,8 +32,33 @@ export class NoteResolver {
       const note = Note.create({
         title,
         content,
-        created_by: user?.id,
+        created_by: user,
       });
+      await note.save();
+      return note;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
+  @Mutation(() => Note)
+  @UseMiddleware(isAuth)
+  async updateNote(
+    @Arg("noteId") noteId: string,
+    @Arg("title") title: string,
+    @Arg("content") content: string,
+    @Ctx() ctx: MyContext
+  ): Promise<Note> {
+    try {
+      const note = await Note.findOne(noteId, { relations: ["created_by"] });
+      if (!note) throw new Error("Note not found.");
+
+      if (note.created_by.id !== ctx.tokenPayload?.userId) {
+        throw new Error("You're not authorized update this note.");
+      }
+
+      note.title = title;
+      note.content = content;
       await note.save();
       return note;
     } catch (error: any) {
