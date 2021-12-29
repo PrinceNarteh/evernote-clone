@@ -65,4 +65,25 @@ export class NoteResolver {
       throw new Error(error.message);
     }
   }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteNote(
+    @Arg("noteId") noteId: string,
+    @Ctx() ctx: MyContext
+  ): Promise<Boolean> {
+    try {
+      const note = await Note.findOne(noteId, { relations: ["created_by"] });
+      if (!note) throw new Error("Note not found.");
+
+      if (note.created_by.id !== ctx.tokenPayload?.userId) {
+        throw new Error("You're not authorized update this note.");
+      }
+
+      await note.remove();
+      return true;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 }
