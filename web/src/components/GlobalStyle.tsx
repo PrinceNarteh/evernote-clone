@@ -28,7 +28,7 @@ const STYLES = css`
 
 export const GENERICS = {
   primaryColor: "#5cc5c8",
-  primaryColorDark: "#008f26",
+  primaryColorDark: "#1bb4b9",
   border: "1px solid #f1f1f1",
   colorBlackCalm: "#333",
   color: "#737373",
@@ -36,11 +36,11 @@ export const GENERICS = {
 };
 
 export const MIXINS = {
-  va: (align = "center") => css`
+  va: (align: "left" | "center" | "right" = "center") => css`
     display: flex;
     align-items: center;
     ${align !== "center"
-      ? `justify-content: flex-start;`
+      ? `justify-content: ${align};`
       : `justify-content: center;`}
   `,
 };

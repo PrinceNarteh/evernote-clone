@@ -1,8 +1,12 @@
+import Navigation from "../components/Navigation";
+import Wrapper from "../components/Wrapper";
+
 function Home() {
   return (
-    <div className="app">
+    <Wrapper>
+      <Navigation />
       <h1>EverNote Clone - Home Page</h1>
-    </div>
+    </Wrapper>
   );
 }
 
