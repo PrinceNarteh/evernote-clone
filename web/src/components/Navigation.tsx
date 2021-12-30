@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { GENERICS, MIXINS } from "./GlobalStyle";
-import { FaPlus, FaSearch, FaSignOutAlt } from "react-icons/fa";
+import { FaBook, FaPlus, FaSearch, FaSignOutAlt, FaStar } from "react-icons/fa";
 
 const Navigation = () => {
   return (
@@ -20,6 +20,16 @@ const Navigation = () => {
         <FaPlus />
         <span>New Note</span>
       </div>
+      <ul className="nav-menus">
+        <li className="active">
+          <FaBook />
+          <span>All Notes</span>
+        </li>
+        <li>
+          <FaStar />
+          <span>Favorite Note</span>
+        </li>
+      </ul>
     </NavigationStyled>
   );
 };
@@ -89,6 +99,33 @@ const NavigationStyled = styled.div`
 
     > span {
       margin-left: 1rem;
+    }
+  }
+
+  .nav-menus {
+    margin-top: 3rem;
+
+    > li {
+      position: relative;
+      ${MIXINS.va("left")};
+      padding: 0.5rem 0;
+      cursor: pointer;
+      gap: 1rem;
+
+      &:hover {
+        color: ${GENERICS.primaryColor};
+      }
+    }
+
+    .active {
+      color: ${GENERICS.primaryColor};
+    }
+
+    .active::after {
+      content: "<";
+      position: absolute;
+      right: 0;
+      font-weight: bold;
     }
   }
 `;
