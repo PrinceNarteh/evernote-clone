@@ -4,6 +4,7 @@ import { isAuthenticated } from "../helper/auth";
 const ProtectedRoute = () => {
   const isAuth = isAuthenticated();
   const location = useLocation();
+
   return isAuth ? (
     <Outlet />
   ) : (

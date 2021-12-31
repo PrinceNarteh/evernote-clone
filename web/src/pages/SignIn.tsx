@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GENERICS } from "../components/GlobalStyle";
 import { Button, Input } from "../styles";
 
@@ -17,6 +17,7 @@ const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   let [signIn, { loading, error }] = useMutation(SIGN_IN_MUTATION);
   const navigate = useNavigate();
+  const location = useLocation() as any;
 
   const onSubmitHandler = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -29,7 +30,11 @@ const SignIn = () => {
         },
       },
       onCompleted: () => {
-        navigate("/");
+        if (location.state.from) {
+          navigate(location.state.from);
+        } else {
+          navigate("/");
+        }
       },
       onError: () => {
         loading = false;
