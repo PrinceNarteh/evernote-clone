@@ -10,6 +10,7 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import { getConnection } from "typeorm";
+import { CONSTANTS } from "../constants/strings";
 import { User } from "../entity/User";
 import { MyContext } from "../helpers/myContext";
 import { isAuth } from "../middleware/isAuth";
@@ -96,6 +97,12 @@ export class UserResolver {
     await getConnection()
       .getRepository(User)
       .increment({ id: userId }, "token_version", 1);
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() ctx: MyContext): Promise<Boolean> {
+    ctx.res.clearCookie(CONSTANTS.JWT_COOKIE);
     return true;
   }
 }
