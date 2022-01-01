@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GENERICS } from "../components/GlobalStyle";
+import { saveToken } from "../helper/auth";
 import { Button, Input } from "../styles";
 
 const SIGN_IN_MUTATION = gql`
@@ -22,24 +23,25 @@ const SignIn = () => {
   const onSubmitHandler = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    await signIn({
-      variables: {
-        data: {
-          email: form.email,
-          password: form.password,
+    try {
+      const { data } = await signIn({
+        variables: {
+          data: {
+            email: form.email,
+            password: form.password,
+          },
         },
-      },
-      onCompleted: () => {
-        if (location.state.from) {
-          navigate(location.state.from);
-        } else {
-          navigate("/");
-        }
-      },
-      onError: () => {
-        loading = false;
-      },
-    });
+      });
+      if (location.state.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
+      saveToken(data?.signIn.access_token);
+    } catch (error) {
+      loading = false;
+      console.error(error);
+    }
   };
 
   const onChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) =>
