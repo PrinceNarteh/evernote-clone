@@ -1,15 +1,37 @@
 import styled from "@emotion/styled";
 import { GENERICS, MIXINS } from "./GlobalStyle";
 import { FaBook, FaPlus, FaSearch, FaSignOutAlt, FaStar } from "react-icons/fa";
+import { gql, useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+import { clearToken } from "../helper/auth";
+
+const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout
+  }
+`;
 
 const Navigation = () => {
+  const [logout, { client }] = useMutation(LOGOUT_MUTATION);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      await client.resetStore();
+      clearToken();
+      navigate("/signin");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <NavigationStyled>
       <div className="user-profile">
         <div>JD</div>
         <span>John Doe</span>
         <span>
-          <FaSignOutAlt />
+          <FaSignOutAlt onClick={handleLogout} />
         </span>
       </div>
       <div className="search-input">
