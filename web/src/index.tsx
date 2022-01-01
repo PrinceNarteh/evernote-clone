@@ -11,14 +11,27 @@ import { GlobalStyles } from "./components/GlobalStyle";
 import Layout from "./components/Layout";
 import reportWebVitals from "./reportWebVitals";
 import Router from "./Router";
+import { setContext } from "@apollo/client/link/context";
+import { getToken } from "./helper/auth";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000/graphql",
   credentials: "include",
 });
 
+const authLink = setContext((_, { headers }) => {
+  const token = getToken();
+
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}`,
+    },
+  };
+});
+
 const client = new ApolloClient({
-  link: ApolloLink.from([httpLink]),
+  link: ApolloLink.from([authLink, httpLink]),
   cache: new InMemoryCache(),
 });
 

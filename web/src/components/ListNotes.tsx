@@ -1,9 +1,23 @@
 import styled from "@emotion/styled";
+import { gql, useQuery } from "@apollo/client";
+
+const LIST_NOTES_QUERY = gql`
+  query ListNotes {
+    listNotes {
+      id
+      title
+      content
+    }
+  }
+`;
 
 const ListNotes = () => {
+  const { data, error, loading } = useQuery(LIST_NOTES_QUERY);
+
   return (
     <ListNotesStyle>
       <h2>All Notes</h2>
+      {JSON.stringify(data.listNotes)}
     </ListNotesStyle>
   );
 };
